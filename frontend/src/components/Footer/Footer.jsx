@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets'
 
 const Footer = () => {
   return (
-    <div className='footer'>
+    <div className='footer' id='footer'>
         <div className="footer-content">
             <div className="footer-content-left">
                 <img src={assets.logo} alt=''/>
@@ -31,12 +31,13 @@ const Footer = () => {
                 <h2>GET IN TOUCH</h2>
                 <ul>
                     <li>Phone: +123456789</li>
-                    <li>contact@tomato.com
-                        </li></ul>
+                    <li>contact@tomato.com</li>
+                        </ul>
 
             </div>
         </div>
-      
+      <hr/>
+      <p className='footer-copyright'>Copyright 2024 @ tomato.com-All Right Reserved</p>
     </div>
   )
 }
