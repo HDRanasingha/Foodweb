@@ -7,6 +7,7 @@
     align-items: center;
     color: grey;
     font-size: max(1vw,12px);
+
 }
 .cart-items-item{
     margin: 10px 0px;
@@ -74,6 +75,7 @@ color: #555;
    border: none;
    outline: none;
    padding-left: 10px;
+   font-size: 15px;
   
    
 }
@@ -84,4 +86,12 @@ color: #555;
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+}
+@media (max-width:750px){
+    .cart-bottom{
+        flex-direction: column-reverse;
+    }
+    .cart-promocode{
+        justify-content: start;
+    }
 }
