@@ -14,7 +14,7 @@ export const register = async (req, res) => {
     }
 
     // Validate password length and content
-    if (password.length > 8 ) {
+    if (password.length !== 8 || !validator.isNumeric(password)) {
       return res.json({ success: false, message: 'Password must be exactly 8 numeric characters' });
     }
 
@@ -33,12 +33,13 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      cart,
     });
 
     await newUser.save();
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, );
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET);
 
     res.json({
       success: true,
@@ -78,7 +79,7 @@ export const login = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
     res.json({
       success: true,

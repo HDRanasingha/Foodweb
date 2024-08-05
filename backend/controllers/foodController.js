@@ -1,5 +1,6 @@
 import foodModel from "../models/foodModel.js";
 import fs from "fs";
+import path from "path";
 
 // Add food item
 const addFood = async (req, res) => {
@@ -18,34 +19,45 @@ const addFood = async (req, res) => {
     res.json({ success: true, message: "Food item added successfully" });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Failed to add food item" });
+    res.status(500).json({ success: false, message: "Failed to add food item" });
   }
 };
 
-//all food list
+// List all food items
 const listFood = async (req, res) => {
- try {
+  try {
     const foods = await foodModel.find();
-    res.json({ success: true,data: foods });
+    res.json({ success: true, data: foods });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Failed to fetch food items" });
+    res.status(500).json({ success: false, message: "Failed to fetch food items" });
   }
 };
-//remove food item
+
+// Remove food item
 const removeFood = async (req, res) => {
-try{
-    const food = await foodModel.findById(req.body.id)
-    fs.unlink(`uploads/${food.image}`, () => {})
+  try {
+    const food = await foodModel.findById(req.body.id);
+    
+    if (!food) {
+      return res.status(404).json({ success: false, message: "Food item not found" });
+    }
 
-    await foodModel.findByIdAndDelete(req.body.id)
+    const imagePath = path.join('uploads', food.image);
+    
+    // Delete the image file
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error("Failed to delete image file:", err);
+      }
+    });
+
+    await foodModel.findByIdAndDelete(req.body.id);
     res.json({ success: true, message: "Food item removed successfully" });
-}catch(error){
+  } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Failed to remove food"})
-}
+    res.status(500).json({ success: false, message: "Failed to remove food item" });
+  }
+};
 
-}
-
-
-export { addFood,listFood,removeFood };
+export { addFood, listFood, removeFood };
